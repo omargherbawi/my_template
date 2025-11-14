@@ -1,0 +1,95 @@
+name: flutter_app
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # Core Tool Packages
+  dartz: ^0.10.1
+  dio: ^5.9.0
+  logger:
+  gap: ^3.0.1
+  jiffy: ^6.4.3
+  flutter_screenutil: ^5.9.3
+  auto_size_text:
+  connectivity_plus: ^7.0.0
+  flutter_dotenv:
+  shimmer:
+  flutter_carousel_widget:
+
+
+  # State Management
+  bloc: ^9.1.0
+  flutter_bloc: ^9.1.1
+  get_it: ^9.0.5
+  equatable:
+
+  # Generator and DB
+  hive_ce: ^2.15.1
+  hive_ce_flutter: ^2.3.3
+  freezed_annotation:
+  flutter_secure_storage: ^9.2.4
+  json_annotation:
+  auto_mappr_annotation: ^2.3.0
+
+  # Routing
+  go_router: ^17.0.0
+
+  # Images
+  image_picker: ^1.2.0
+  path_provider: ^2.1.5
+  # pretty_qr_code:
+  path:
+  cached_network_image_plus:
+
+  # Localization
+  easy_localization: ^3.0.8
+
+
+
+  # Notification
+  onesignal_flutter: ^5.3.4
+
+
+dev_dependencies:
+  flutter_lints:
+  freezed: ^3.2.3
+  json_serializable: ^6.11.1
+  hive_ce_generator: ^1.10.0
+  build_runner: ^2.10.1
+  flutter_native_splash:
+  auto_mappr: ^2.12.0
+
+
+
+
+  #  flutter pub run build_runner build --delete-conflicting-outputs
+  #  flutter pub run build_runner watch --delete-conflicting-outputs
+
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Almarai
+      fonts:
+        - asset: assets/fonts/Almarai/Almarai-Regular.ttf
+        - asset: assets/fonts/Almarai/Almarai-Bold.ttf
+
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/fonts/Almarai/
+    - assets/images/
+    - assets/lottie/
+    - .env
+
