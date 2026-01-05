@@ -51,7 +51,7 @@ lib/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/MuhammadAli224/My-Flutter-Template.git
+git clone https://github.com/omargherbawi/my_template.git
 cd My-Flutter-Template
 ```
 
