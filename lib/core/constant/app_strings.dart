@@ -149,6 +149,7 @@ abstract class AppStrings {
   static const String duration = "duration";
   static const String month = "month";
   static const String product = "product";
+  static const String productNotFound = "productNotFound";
   static const String unlimited = "unlimited";
   static const String pay = "pay";
   static const String details = "details";
