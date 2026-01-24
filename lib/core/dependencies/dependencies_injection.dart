@@ -5,8 +5,8 @@ final getIt = GetIt.instance;
 void initGetIt() async {
   //======================== Dio ===============================================
   getIt.registerSingleton<AppServices>(AppServices());
-  final appBox = await Hive.openBox(BoxKey.appBox);
-  getIt.registerSingleton<Box>(appBox, instanceName: BoxKey.appBox);
+  // appBox is already registered in main.dart during initialization
+  
   //======================== Services ==========================================
   getIt.registerLazySingleton<HeadersProvider>(
         () => HeadersProvider(hive: getIt<Box>(instanceName: BoxKey.appBox)),

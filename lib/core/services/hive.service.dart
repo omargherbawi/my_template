@@ -3,11 +3,9 @@ import '../../global_imports.dart';
 
 class HiveServices {
   Future<void> init() async {
-    await Hive.initFlutter();
-    // Hive.registerAdapters();
-
+    // appBox is already initialized in main.dart
+    // Only initialize other boxes here
     await Future.wait([
-      _initAppBox(),
       _initializeBoxModel<AuthUserModel>(boxName: BoxKey.authUserBox),
     ]);
   }

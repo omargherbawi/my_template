@@ -14,6 +14,18 @@ class MyHttpOverrides extends HttpOverrides {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   EasyLocalization.ensureInitialized();
+  
+  // Initialize environment variables first
+  await EnvConstant.init();
+  
+  // Initialize Hive and register appBox before building the app
+  await Hive.initFlutter();
+  final appBox = await Hive.openBox(BoxKey.appBox);
+  getIt.registerSingleton<Box>(appBox, instanceName: BoxKey.appBox);
+  
+  // Initialize GetIt dependencies early
+  initGetIt();
+  
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Scaffold(
       appBar: AppBar(title: const Text('Oops! An error occurred')),

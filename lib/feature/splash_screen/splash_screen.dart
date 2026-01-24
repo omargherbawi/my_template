@@ -65,11 +65,11 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _initializeApp() async {
     try {
-      await EnvConstant.init();
-
+      // EnvConstant.init() is already called in main.dart
+      
       await HiveServices().init();
 
-      initGetIt();
+      // initGetIt() is already called in main.dart
       await getIt<AppServices>().initAppServices();
 
       HttpOverrides.global = MyHttpOverrides();
