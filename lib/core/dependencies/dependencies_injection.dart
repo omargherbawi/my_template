@@ -1,4 +1,5 @@
 import '../../../../global_imports.dart';
+import '../../feature/product/di/product_di.dart';
 
 final getIt = GetIt.instance;
 
@@ -27,4 +28,5 @@ void initGetIt() async {
   //======================== Features  =========================================
 
   initAuthDI();
+  initProductDI();
 }
