@@ -1,5 +1,6 @@
 import '../../../../global_imports.dart';
 import '../../domain/entities/character_entity.dart';
+import '../../domain/entities/sub_entities/character_response.dart';
 import '../../domain/repository/character_repository.dart';
 import '../datasource/character_data_source.dart';
 

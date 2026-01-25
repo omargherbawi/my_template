@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../entities/character_entity.dart';
+import '../entities/sub_entities/character_response.dart';
 import '../repository/character_repository.dart';
 
 class GetCharacters {

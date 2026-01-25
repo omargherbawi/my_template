@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import '../../../../global_imports.dart';
 import '../endpoints/character_endpoints.dart';
 import '../model/character_model.dart';
+import '../model/sub_models/character_response_model.dart';
 
 abstract class CharacterDataSource {
   Future<CharacterResponseModel> getCharacters({int page = 1});
@@ -29,7 +30,7 @@ class CharacterRemoteDataSource extends CharacterDataSource {
   @override
   Future<CharacterResponseModel> getCharacters({int page = 1}) async {
     final response = await _dio.get(
-      CharacterEndpoints.getCharacters,
+      CharacterEndpoints.character,
       queryParameters: {'page': page},
     );
     
@@ -38,7 +39,7 @@ class CharacterRemoteDataSource extends CharacterDataSource {
 
   @override
   Future<CharacterModel> getCharacter(int id) async {
-    final response = await _dio.get('${CharacterEndpoints.getCharacter}/$id');
+    final response = await _dio.get('${CharacterEndpoints.character}/$id');
     
     return CharacterModel.fromJson(response.data as Map<String, dynamic>);
   }

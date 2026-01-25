@@ -14,119 +14,113 @@ class CharacterCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              // Character Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  character.image,
-                  width: 80,
-                  height: 80,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 3,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: character.image,
                   fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.error,
-                        color: Colors.grey,
-                      ),
-                    );
-                  },
+                  placeholder: (context, url) => Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                    ),
+                    child: const Icon(
+                      Icons.error,
+                      color: Colors.grey,
+                      size: 32,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(width: 16),
-              // Character Info
-              Expanded(
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
+                  ),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Character Name
-                    Text(
-                      character.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    // Status
-                    Row(
-                      children: [
-                        _getStatusIcon(character.status),
-                        const SizedBox(width: 4),
-                        Text(
-                          character.status,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: _getStatusColor(character.status),
-                            fontWeight: FontWeight.w500,
-                          ),
+                    Flexible(
+                      child: Text(
+                        character.name,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                      ),
                     ),
-                    const SizedBox(height: 4),
-                    // Species
-                    Text(
-                      'Species: ${character.species}',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
+                    Flexible(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          getStatusIcon(character.status),
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              '${character.status} - ${character.species}',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-              // Arrow Icon
-              const Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: Colors.grey,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _getStatusIcon(String status) {
+  Widget getStatusIcon(String status) {
     switch (status.toLowerCase()) {
       case 'alive':
         return Container(
-          width: 8,
-          height: 8,
+          width: 6,
+          height: 6,
           decoration: const BoxDecoration(
             color: Colors.green,
             shape: BoxShape.circle,
@@ -134,8 +128,8 @@ class CharacterCardWidget extends StatelessWidget {
         );
       case 'dead':
         return Container(
-          width: 8,
-          height: 8,
+          width: 6,
+          height: 6,
           decoration: const BoxDecoration(
             color: Colors.red,
             shape: BoxShape.circle,
@@ -143,8 +137,8 @@ class CharacterCardWidget extends StatelessWidget {
         );
       default:
         return Container(
-          width: 8,
-          height: 8,
+          width: 6,
+          height: 6,
           decoration: const BoxDecoration(
             color: Colors.grey,
             shape: BoxShape.circle,
@@ -153,14 +147,4 @@ class CharacterCardWidget extends StatelessWidget {
     }
   }
 
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'alive':
-        return Colors.green;
-      case 'dead':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
 }

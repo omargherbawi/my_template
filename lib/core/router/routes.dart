@@ -1,5 +1,4 @@
 import '../../../../global_imports.dart';
-import '../../feature/product/presentation/screens/product_screen.dart';
 import '../../feature/character/presentation/screens/character_list_screen.dart';
 import '../../feature/character/presentation/screens/character_detail_screen.dart';
 
@@ -8,7 +7,6 @@ GoRouter goRouters = GoRouter(
   debugLogDiagnostics: true,
   initialLocation: AppRoutes.characters,
   routes: [
-    GoRoute(path: AppRoutes.product, builder: (context, state) => const ProductScreen()),
     GoRoute(path: AppRoutes.characters, builder: (context, state) => const CharacterListScreen()),
     GoRoute(
       path: AppRoutes.characterDetail,

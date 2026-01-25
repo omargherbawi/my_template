@@ -1,4 +1,5 @@
 import '../../domain/entities/character_entity.dart';
+import '../../domain/entities/sub_entities/paginated_response.dart';
 
 abstract class CharacterState {}
 
@@ -7,9 +8,27 @@ class CharacterInitial extends CharacterState {}
 class CharacterLoading extends CharacterState {}
 
 class CharacterListLoaded extends CharacterState {
-  final CharacterResponse characterResponse;
+  final List<CharacterEntity> characters;
+  final Pagination pagination;
+  final bool isLoadingMore;
 
-  CharacterListLoaded(this.characterResponse);
+  CharacterListLoaded({
+    required this.characters,
+    required this.pagination,
+    this.isLoadingMore = false,
+  });
+
+  CharacterListLoaded copyWith({
+    List<CharacterEntity>? characters,
+    Pagination? pagination,
+    bool? isLoadingMore,
+  }) {
+    return CharacterListLoaded(
+      characters: characters ?? this.characters,
+      pagination: pagination ?? this.pagination,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    );
+  }
 }
 
 class CharacterDetailLoaded extends CharacterState {

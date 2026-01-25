@@ -2,6 +2,7 @@ export 'dart:io';
 
 export 'package:auto_mappr_annotation/auto_mappr_annotation.dart';
 export 'package:auto_size_text/auto_size_text.dart';
+export 'package:cached_network_image/cached_network_image.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:dartz/dartz.dart' hide State, id;
 export 'package:dio/dio.dart';

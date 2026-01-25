@@ -12,116 +12,107 @@ class CharacterDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Character Image and Basic Info
-          Center(
-            child: Column(
+          Container(
+            height: 400,
+            width: double.infinity,
+            child: Stack(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    character.image,
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Icon(
-                          Icons.error,
-                          color: Colors.grey,
-                          size: 64,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  character.name,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _getStatusIcon(character.status),
-                    const SizedBox(width: 8),
-                    Text(
-                      character.status,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: _getStatusColor(character.status),
-                        fontWeight: FontWeight.w500,
-                      ),
+                CachedNetworkImage(
+                  imageUrl: character.image,
+                  width: double.infinity,
+                  height: 400,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    width: double.infinity,
+                    height: 400,
+                    color: Colors.grey[300],
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                  ],
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    width: double.infinity,
+                    height: 400,
+                    color: Colors.grey[300],
+                    child: const Icon(
+                      Icons.error,
+                      color: Colors.grey,
+                      size: 64,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 400,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 24,
+                  left: 24,
+                  right: 24,
+                  child: Text(
+                    character.name,
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(0, 2),
+                          blurRadius: 4,
+                          color: Colors.black54,
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 24),
           
-          // Character Details
-          _buildInfoSection('Basic Information', [
-            _buildInfoRow('Species', character.species),
-            _buildInfoRow('Gender', character.gender),
-            if (character.type.isNotEmpty) _buildInfoRow('Type', character.type),
-          ]),
-          
-          const SizedBox(height: 16),
-          
-          _buildInfoSection('Location Information', [
-            _buildInfoRow('Origin', character.origin.name),
-            _buildInfoRow('Current Location', character.location.name),
-          ]),
-          
-          const SizedBox(height: 16),
-          
-          _buildInfoSection('Episode Appearances', [
-            _buildInfoRow('Total Episodes', character.episode.length.toString()),
-          ]),
-          
-          const SizedBox(height: 16),
-          
-          _buildInfoSection('Additional Information', [
-            _buildInfoRow('Created', _formatDate(character.created)),
-          ]),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                buildInfoSection('Information', [
+                  buildInfoRowWithStatus('Status', character.status, getStatusIcon(character.status)),
+                  buildInfoRow('Species', character.species),
+                  buildInfoRow('Gender', character.gender),
+                  buildInfoRow('Episodes', '${character.episode.length} appearances'),
+                ]),
+                
+                const SizedBox(height: 16),
+                
+                buildInfoSection('Location', [
+                  buildInfoRowWithIcon('Origin', character.origin.name, Icons.location_pin),
+                  buildInfoRowWithIcon('Last known location', character.location.name, Icons.location_pin),
+                ]),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoSection(String title, List<Widget> children) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
+  Widget buildInfoSection(String title, List<Widget> children) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -134,10 +125,10 @@ class CharacterDetailWidget extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.green,
+                color: Colors.black87,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             ...children,
           ],
         ),
@@ -145,19 +136,20 @@ class CharacterDetailWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget buildInfoRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 120,
+            width: 140,
             child: Text(
               '$label:',
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                color: Colors.grey[600],
               ),
             ),
           ),
@@ -165,7 +157,9 @@ class CharacterDetailWidget extends StatelessWidget {
             child: Text(
               value,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
               ),
             ),
           ),
@@ -174,12 +168,94 @@ class CharacterDetailWidget extends StatelessWidget {
     );
   }
 
-  Widget _getStatusIcon(String status) {
+  Widget buildInfoRowWithStatus(String label, String value, Widget statusIcon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 140,
+            child: Text(
+              '$label:',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                color: Colors.grey[600],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                statusIcon,
+                const SizedBox(width: 8),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: getStatusColor(value),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildInfoRowWithIcon(String label, String value, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 140,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                color: Colors.grey[600],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  color: Colors.blue,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    value,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getStatusIcon(String status) {
     switch (status.toLowerCase()) {
       case 'alive':
         return Container(
-          width: 12,
-          height: 12,
+          width: 8,
+          height: 8,
           decoration: const BoxDecoration(
             color: Colors.green,
             shape: BoxShape.circle,
@@ -187,8 +263,8 @@ class CharacterDetailWidget extends StatelessWidget {
         );
       case 'dead':
         return Container(
-          width: 12,
-          height: 12,
+          width: 8,
+          height: 8,
           decoration: const BoxDecoration(
             color: Colors.red,
             shape: BoxShape.circle,
@@ -196,8 +272,8 @@ class CharacterDetailWidget extends StatelessWidget {
         );
       default:
         return Container(
-          width: 12,
-          height: 12,
+          width: 8,
+          height: 8,
           decoration: const BoxDecoration(
             color: Colors.grey,
             shape: BoxShape.circle,
@@ -206,7 +282,7 @@ class CharacterDetailWidget extends StatelessWidget {
     }
   }
 
-  Color _getStatusColor(String status) {
+  Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'alive':
         return Colors.green;
@@ -214,15 +290,6 @@ class CharacterDetailWidget extends StatelessWidget {
         return Colors.red;
       default:
         return Colors.grey;
-    }
-  }
-
-  String _formatDate(String dateString) {
-    try {
-      final date = DateTime.parse(dateString);
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (e) {
-      return dateString;
     }
   }
 }
