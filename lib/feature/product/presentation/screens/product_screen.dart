@@ -9,7 +9,8 @@ class ProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product'),
+        backgroundColor: Colors.green,
+        title: const Text('Rick &Morty Character'),
       ),
       body: BlocProvider(
         create: (context) => getIt<ProductCubit>(),

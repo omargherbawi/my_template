@@ -21,5 +21,4 @@ export 'package:onesignal_flutter/onesignal_flutter.dart';
 export 'core/core.dart';
 ////////////// Features
 
-export 'feature/auth/auth_barrel.dart';
 export 'main.dart';

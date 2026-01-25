@@ -6,7 +6,6 @@ class HiveServices {
     // appBox is already initialized in main.dart
     // Only initialize other boxes here
     await Future.wait([
-      _initializeBoxModel<AuthUserModel>(boxName: BoxKey.authUserBox),
     ]);
   }
 
