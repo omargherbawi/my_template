@@ -28,47 +28,65 @@ class CharacterItem extends StatelessWidget {
                 color: Color.fromARGB(255, 221, 248, 222),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                     Text(character.name, style:  const TextStyle(fontSize: 18 , fontWeight: FontWeight.bold ,color: Colors.black)),
+                    Text(
+                      character.name,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
+                    ),
+                    const SizedBox(height: 2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                      
-                        Text(  
-                          character.status,
-                          style:  const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
+                        Flexible(
+                          child: Text(
+                            character.status,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const Text(  
-                          '-',
+                        const Text(
+                          ' - ',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
                           ),
                         ),
-                         Text(  
-                          character.species,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
+                        Flexible(
+                          child: Text(
+                            character.species,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        SizedBox(width: 5),
-                          Container(
+                        const SizedBox(width: 5),
+                        Container(
                           width: 10,
                           height: 10,
-                          decoration:  BoxDecoration(
-                            color:character.status == "Alive" ? Colors.green : Colors.red,
+                          decoration: BoxDecoration(
+                            color: character.status == 'Alive'
+                                ? Colors.green
+                                : Colors.red,
                             shape: BoxShape.circle,
                           ),
                         ),
-                      ],  
+                      ],
                     ),
                   ],
                 ),

@@ -1,12 +1,30 @@
-import 'package:flutter/material.dart';
 
 import '../../../../global_imports.dart';
 import '../cubit/character_cubit.dart';
 import '../cubit/character_state.dart';
 import '../widget/character_item.dart';
 
-class AllCharacterScreen extends StatelessWidget {
+class AllCharacterScreen extends StatefulWidget {
   const AllCharacterScreen({super.key});
+
+  @override
+  State<AllCharacterScreen> createState() => _AllCharacterScreenState();
+}
+
+class _AllCharacterScreenState extends State<AllCharacterScreen> {
+    final ScrollController scrollController = ScrollController();
+    @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+  if (scrollController.position.pixels >=
+      scrollController.position.maxScrollExtent - 200) {
+    context.read<CharacterCubit>().getAllCharacters();
+  }
+});
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,29 +63,58 @@ class AllCharacterScreen extends StatelessWidget {
         ),
       ),
       body:
-          BlocBuilder<CharacterCubit, CharacterState>(
-            builder: (context, state) {
-              if (state is CharacterLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state is CharacterError) {
-                return Center(child: Text(state.message));
-              }
-              if (state is CharacterLoaded) {
-                return GridView.builder(
-                  padding: const EdgeInsets.all(10),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 10,
-                    mainAxisExtent: 244,
-                  ),
-                  itemCount: state.characters.length,
-                  itemBuilder: (context, index) => CharacterItem(character: state.characters[index]),
-                );
-              }
-              return const SizedBox.shrink();
+          RefreshIndicator(
+            color: Colors.green,
+            onRefresh: () async {
+              context.read<CharacterCubit>().getAllCharacters(refresh: true);
             },
+            child: BlocBuilder<CharacterCubit, CharacterState>(
+              builder: (context, state) {
+                if (state is CharacterLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state is CharacterError) {
+                  return Center(child: Text(state.message));
+                }
+               if (state is CharacterLoaded) {
+  return GridView.builder(
+    padding: const EdgeInsets.all(10),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      mainAxisSpacing: 12,
+      crossAxisSpacing: 10,
+      mainAxisExtent: 244,
+    ),
+    controller: scrollController,
+
+    itemCount: state.characters.length + 1,
+
+    itemBuilder: (context, index) {
+
+      if (index == state.characters.length) {
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(color: Colors.green),
+          ),
+        );
+      }
+
+      return CharacterItem(
+        character: state.characters[index],
+      );
+    },
+  );
+}
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+return const SizedBox.shrink();
+              },
+            ),
           ),
     );
   }

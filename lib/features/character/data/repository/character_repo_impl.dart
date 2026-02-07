@@ -12,9 +12,9 @@ class CharacterRepoImpl implements CharacterRepo {
   CharacterRepoImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, List<CharacterEntity>>> getAllCharacters() async {
+  Future<Either<Failure, List<CharacterEntity>>> getAllCharacters({int page = 1}) async {
    try {
-    final characters = await remoteDataSource.getAllCharacters();
+    final characters = await remoteDataSource.getAllCharacters(page: page);
     return right(characters);
    } on ServerFailure catch (e) {
     return left(ServerFailure(message: e.message));

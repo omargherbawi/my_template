@@ -9,7 +9,7 @@ class GetAllCharactersUseCase {
 
   GetAllCharactersUseCase({required this.repository});
 
-   Future<Either<Failure, List<CharacterEntity>>> call() async {
-     return repository.getAllCharacters();
+   Future<Either<Failure, List<CharacterEntity>>> call({int page = 1}) async {
+     return repository.getAllCharacters(page: page);
   }
 }
