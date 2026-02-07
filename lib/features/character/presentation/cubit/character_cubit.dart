@@ -10,7 +10,7 @@ class CharacterCubit extends Cubit<CharacterState> {
   int page = 1;
   bool isFetching = false;
   List<CharacterEntity> characters = [];
-  String _searchQuery = ''; 
+  String searchQuery = ''; 
 
   CharacterCubit({
     required this.getAllCharactersUseCase,
@@ -52,12 +52,12 @@ class CharacterCubit extends Cubit<CharacterState> {
         }
 
         characters.addAll(newCharacters);
-        final toAdd = _searchQuery.isEmpty
+        final toAdd = searchQuery.isEmpty
             ? newCharacters
             : newCharacters
                 .where(
                   (c) =>
-                      c.name.toLowerCase().contains(_searchQuery.toLowerCase()),
+                      c.name.toLowerCase().contains(searchQuery.toLowerCase()),
                 )
                 .toList();
         filteredCharacters.addAll(toAdd);
@@ -77,7 +77,7 @@ class CharacterCubit extends Cubit<CharacterState> {
 
 
   void filterCharacters(String query) {
-    _searchQuery = query;
+    searchQuery = query;
     filteredCharacters.clear();
     if (query.isEmpty) {
       filteredCharacters.addAll(characters);
