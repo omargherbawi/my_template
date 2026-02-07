@@ -1,4 +1,6 @@
-import 'global_imports.dart';
+import 'features/character/di/character_di.dart';
+import 'features/character/presentation/cubit/character_cubit.dart';
+import 'global_imports.dart' hide getIt;
 
 var logger = Logger(printer: PrettyPrinter(colors: true, printEmojis: true));
 
@@ -25,6 +27,8 @@ Future<void> main() async {
   
   // Initialize GetIt dependencies early
   initGetIt();
+  initCharacterDi();
+
   
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Scaffold(
@@ -71,7 +75,8 @@ class MyApp extends StatelessWidget {
         ThemeCubit()
           ..init()),
 
-        BlocProvider(create: (context) => getIt<ConnectionCubit>())],
+        BlocProvider(create: (context) => getIt<ConnectionCubit>()),
+        BlocProvider(create: (context) => getIt <CharacterCubit>()..getAllCharacters())],
       child: Builder(
         builder: (context) {
           return BlocBuilder<ThemeCubit, ThemeData>(
