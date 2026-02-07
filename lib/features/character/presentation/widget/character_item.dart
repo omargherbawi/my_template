@@ -18,7 +18,24 @@ class CharacterItem extends StatelessWidget {
           children: [
             ClipRRect(
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(18), topRight: Radius.circular(18)),
-              child: CachedNetworkImage(imageUrl: character.image, width: 180, height: 150, fit: BoxFit.cover,)),
+              child: CachedNetworkImage(
+                imageUrl: character.image,
+                width: 180,
+                height: 150,
+                fit: BoxFit.cover,
+                placeholder: (_, __) => Container(
+                  width: 180,
+                  height: 150,
+                  color: Colors.grey.shade300,
+                  child: const Icon(Icons.person, size: 48, color: Colors.grey),
+                ),
+                errorWidget: (_, __, ___) => Container(
+                  width: 180,
+                  height: 150,
+                  color: Colors.grey.shade300,
+                  child: const Icon(Icons.broken_image_outlined, size: 48, color: Colors.grey),
+                ),
+              )),
             Container(
               width: 180,
               height: 90,

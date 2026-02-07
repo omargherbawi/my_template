@@ -18,6 +18,18 @@ class CharacterImage extends StatelessWidget {
           width: double.infinity,
           height: 330,
           fit: BoxFit.cover,
+          placeholder: (_, __) => Container(
+            color: Colors.grey.shade300,
+            child: const Center(
+              child: Icon(Icons.person, size: 80, color: Colors.grey),
+            ),
+          ),
+          errorWidget: (_, __, ___) => Container(
+            color: Colors.grey.shade300,
+            child: const Center(
+              child: Icon(Icons.broken_image_outlined, size: 80, color: Colors.grey),
+            ),
+          ),
         ),
         Positioned(
           top: 50,
