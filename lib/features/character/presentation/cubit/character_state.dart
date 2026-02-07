@@ -10,9 +10,14 @@ class CharacterLoading extends CharacterState {}
 
 class CharacterLoaded extends CharacterState {
   final List<CharacterEntity> characters;
-    final bool isLoadingMore;
+  final bool isLoadingMore;
+  final bool hasMore;
 
-  CharacterLoaded({required this.characters, required this.isLoadingMore});
+  CharacterLoaded({
+    required this.characters,
+    required this.isLoadingMore,
+    required this.hasMore,
+  });
 }
 
 class CharacterError extends CharacterState {

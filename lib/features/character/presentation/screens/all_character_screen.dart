@@ -33,18 +33,21 @@ class _AllCharacterScreenState extends State<AllCharacterScreen> {
         toolbarHeight: 100,
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 97, 233, 102),
-        title:  const Column(
+        title:  Column(
           children: [
-             Text(
+             const Text(
               'Rick & Morty Characters',
               
               style: TextStyle(color: Colors.black),
             ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             TextField(
+              onChanged: (value) {
+                context.read<CharacterCubit>().filterCharacters(value);
+              },
               cursorColor: Colors.black,
               textAlign: TextAlign.start,
-              decoration:  InputDecoration(
+              decoration:  const InputDecoration(
                 hintText: 'search',
                 hintStyle:  TextStyle(color: Colors.black),
                 fillColor: Colors.white,
@@ -77,6 +80,7 @@ class _AllCharacterScreenState extends State<AllCharacterScreen> {
                   return Center(child: Text(state.message));
                 }
                if (state is CharacterLoaded) {
+  final showLoadingIndicator = state.isLoadingMore;
   return GridView.builder(
     padding: const EdgeInsets.all(10),
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -87,11 +91,11 @@ class _AllCharacterScreenState extends State<AllCharacterScreen> {
     ),
     controller: scrollController,
 
-    itemCount: state.characters.length + 1,
+    itemCount: state.characters.length + (showLoadingIndicator ? 1 : 0),
 
     itemBuilder: (context, index) {
 
-      if (index == state.characters.length) {
+      if (showLoadingIndicator && index == state.characters.length) {
         return const Center(
           child: Padding(
             padding: EdgeInsets.all(8.0),

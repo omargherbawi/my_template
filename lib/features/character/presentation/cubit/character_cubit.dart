@@ -5,11 +5,12 @@ import 'character_state.dart';
 
 class CharacterCubit extends Cubit<CharacterState> {
   final GetAllCharactersUseCase getAllCharactersUseCase;
-
-  bool hasMore = true;        
-  int page = 1;             
-  bool isFetching = false;  
-  List<CharacterEntity> characters = []; 
+  final List<CharacterEntity> filteredCharacters = [];
+  bool hasMore = true;
+  int page = 1;
+  bool isFetching = false;
+  List<CharacterEntity> characters = [];
+  String _searchQuery = ''; 
 
   CharacterCubit({
     required this.getAllCharactersUseCase,
@@ -24,6 +25,7 @@ class CharacterCubit extends Cubit<CharacterState> {
     if (refresh) {
       page = 1;
       characters.clear();
+      filteredCharacters.clear();
       hasMore = true;
     }
 
@@ -31,8 +33,9 @@ class CharacterCubit extends Cubit<CharacterState> {
       emit(CharacterLoading());
     } else {
       emit(CharacterLoaded(
-        characters: characters,
+        characters: filteredCharacters,
         isLoadingMore: true,
+        hasMore: hasMore,
       ));
     }
 
@@ -49,16 +52,47 @@ class CharacterCubit extends Cubit<CharacterState> {
         }
 
         characters.addAll(newCharacters);
-
+        final toAdd = _searchQuery.isEmpty
+            ? newCharacters
+            : newCharacters
+                .where(
+                  (c) =>
+                      c.name.toLowerCase().contains(_searchQuery.toLowerCase()),
+                )
+                .toList();
+        filteredCharacters.addAll(toAdd);
         page++;
 
         isFetching = false;
 
         emit(CharacterLoaded(
-          characters: characters,
+          characters: filteredCharacters,
           isLoadingMore: false,
+          hasMore: hasMore,
         ));
       },
     );
   }
+
+
+
+  void filterCharacters(String query) {
+    _searchQuery = query;
+    filteredCharacters.clear();
+    if (query.isEmpty) {
+      filteredCharacters.addAll(characters);
+    } else {
+      filteredCharacters.addAll(
+        characters.where(
+          (character) => character.name.toLowerCase().contains(query.toLowerCase()),
+        ).toList(),
+      );
+    }
+    emit(CharacterLoaded(
+      characters: filteredCharacters,
+      isLoadingMore: false,
+      hasMore: hasMore,
+    ));
+  }
 }
+
