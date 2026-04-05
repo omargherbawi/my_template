@@ -1,5 +1,7 @@
+import 'features/character/data/model/character_model.dart';
 import 'features/character/di/character_di.dart';
 import 'features/character/presentation/cubit/character_cubit.dart';
+import 'hive_registrar.g.dart';
 import 'global_imports.dart' hide getIt;
 
 var logger = Logger(printer: PrettyPrinter(colors: true, printEmojis: true));
@@ -22,8 +24,14 @@ Future<void> main() async {
   
   // Initialize Hive and register appBox before building the app
   await Hive.initFlutter();
+  Hive.registerAdapters();
   final appBox = await Hive.openBox(BoxKey.appBox);
   getIt.registerSingleton<Box>(appBox, instanceName: BoxKey.appBox);
+  final characterBox = await Hive.openBox<CharacterModel>(BoxKey.characterBox);
+  getIt.registerSingleton<Box<CharacterModel>>(
+    characterBox,
+    instanceName: BoxKey.characterBox,
+  );
   
   // Initialize GetIt dependencies early
   initGetIt();

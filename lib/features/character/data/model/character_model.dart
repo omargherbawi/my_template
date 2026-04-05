@@ -1,14 +1,51 @@
+import 'package:hive_ce/hive.dart';
+
 import '../../domain/entities/character_entity.dart';
 import 'submodels/character_location_model.dart';
 
+part 'character_model.g.dart';
 
-
+@HiveType(typeId: 11)
 class CharacterModel extends CharacterEntity {
+  @override
+  @HiveField(0)
+  int get id => super.id;
+
+  @override
+  @HiveField(1)
+  String get name => super.name;
+
+  @override
+  @HiveField(2)
+  String get image => super.image;
+
+  @override
+  @HiveField(3)
+  String get status => super.status;
+
+  @override
+  @HiveField(4)
+  String get species => super.species;
+
+  @override
+  @HiveField(5)
+  String get gender => super.gender;
+
+  @override
+  @HiveField(6)
+  List<int> get episodes => super.episodes;
+
+  @HiveField(7)
   final String type;
+  @HiveField(8)
   final CharacterLocation origin;
+  @HiveField(9)
   final CharacterLocation location;
+  @HiveField(10)
   final List<String> episodeUrls;
+  @HiveField(11)
   final String url;
+  @HiveField(12)
   final String created;
 
   CharacterModel({

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../core/enum/datasource_enum.dart';
 import '../../../../core/errors/failure.dart';
 import '../entities/character_entity.dart';
 import '../repository/character_repo.dart';
@@ -9,7 +10,13 @@ class GetAllCharactersUseCase {
 
   GetAllCharactersUseCase({required this.repository});
 
-   Future<Either<Failure, List<CharacterEntity>>> call({int page = 1}) async {
-     return repository.getAllCharacters(page: page);
+  Future<Either<Failure, List<CharacterEntity>>> call({
+    int page = 1,
+    required DataSource dataSource,
+  }) async {
+    return repository.getAllCharacters(
+      page: page,
+      dataSource: dataSource,
+    );
   }
 }

@@ -10,7 +10,7 @@ class CharacterCubit extends Cubit<CharacterState> {
   int page = 1;
   bool isFetching = false;
   List<CharacterEntity> characters = [];
-  String searchQuery = ''; 
+  String searchQuery = '';
 
   CharacterCubit({
     required this.getAllCharactersUseCase,
@@ -39,7 +39,10 @@ class CharacterCubit extends Cubit<CharacterState> {
       ));
     }
 
-    final result = await getAllCharactersUseCase.call(page: page);
+    final result = await getAllCharactersUseCase.call(
+      page: page,
+      dataSource: DataSource.remote,
+    );
 
     result.fold(
       (failure) {
