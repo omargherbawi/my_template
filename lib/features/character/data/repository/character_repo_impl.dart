@@ -27,9 +27,13 @@ class CharacterRepoImpl implements CharacterRepo {
     int page = 1,
     required DataSource dataSource,
   }) async {
-    try {
-      final hasConnection = await networkInfo.isConnected;
 
+
+    try {
+
+
+      final hasConnection = await networkInfo.isConnected;
+      //  no internet => from locall
       if (!hasConnection || dataSource == DataSource.local) {
         final localList = await localDataSource.getAllCharacters();
         if (localList.isNotEmpty) {
@@ -37,12 +41,18 @@ class CharacterRepoImpl implements CharacterRepo {
         }
       }
 
+
+      //internet => from remote
       final characters = await remoteDataSource.getAllCharacters(
         page: page,
       );
       await localDataSource.saveCharacters(characters);
       return right(List<CharacterEntity>.from(characters));
+
+
     } on DioException catch (e, t) {
+
+      //if the error is timeout (connection failed), try to get data from local
       if (e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.sendTimeout) {
@@ -56,8 +66,10 @@ class CharacterRepoImpl implements CharacterRepo {
           ),
         );
       }
+      // dio error but not a timeout error, return the error
       return handleRepoDataError(e, t);
     } catch (e, t) {
+      //any other error, return the error
       return handleRepoDataError(e, t);
     }
   }
